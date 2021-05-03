@@ -87,7 +87,7 @@ class external extends external_api {
                 return 'completed';
         }
 
-        return 'unknown';
+        return 'unknownstatus';
     }
 
     /**
