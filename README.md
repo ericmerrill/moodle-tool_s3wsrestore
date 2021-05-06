@@ -27,7 +27,7 @@ A plugin that exposes a webservice that takes a S3 object key, and attempts to d
         * `pending`
         * `inprogress`
         * `failed`
-        * `completed`
+        * `complete`
         * `unknownstatus`
 
 #### tool_s3wsrestore_get_detailed_restore_status

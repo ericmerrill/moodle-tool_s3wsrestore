@@ -84,7 +84,7 @@ class external extends external_api {
             case (restore_request::STATUS_FAILED):
                 return 'failed';
             case (restore_request::STATUS_COMPLETE):
-                return 'completed';
+                return 'complete';
         }
 
         return 'unknownstatus';
