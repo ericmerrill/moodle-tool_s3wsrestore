@@ -51,7 +51,7 @@ class external extends external_api {
     public static function get_restore_status_parameters(): external_function_parameters {
         return new external_function_parameters(
             [
-                'restoreid' => new external_value(PARAM_INT,'The id of the restore to check')
+                'restoreid' => new external_value(PARAM_INT, 'The id of the restore to check')
             ]
         );
     }
@@ -107,7 +107,7 @@ class external extends external_api {
     public static function get_detailed_restore_status_parameters(): external_function_parameters {
         return new external_function_parameters(
             [
-                'restoreid' => new external_value(PARAM_INT,'The id of the restore to check')
+                'restoreid' => new external_value(PARAM_INT, 'The id of the restore to check')
             ]
         );
     }
@@ -166,8 +166,8 @@ class external extends external_api {
     public static function restore_course_parameters() {
         return new external_function_parameters(
             [
-                's3key'     => new external_value(PARAM_RAW,'The S3 key of the file to restore'),
-                'courseid'  => new external_value(PARAM_INT,'The Moodle course id to restore into')
+                's3key'     => new external_value(PARAM_RAW, 'The S3 key of the file to restore'),
+                'courseid'  => new external_value(PARAM_INT, 'The Moodle course id to restore into')
             ]
         );
 
@@ -225,32 +225,6 @@ class external extends external_api {
         }
 
         return ['status' => 'success', 'restoreid' => $request->id];
-
-        // $result = [];
-        // switch ($courseid % 5) {
-        //     case (0):
-        //         $result['status'] = 'success';
-        //         $result['restoreid'] = mt_rand();
-        //         break;
-        //     case (1):
-        //         $result['status'] = 'error';
-        //         $result['message'] = 'Unable to schedule restore';
-        //         break;
-        //     case (2):
-        //         $result['status'] = 'error';
-        //         $result['message'] = 'File not found';
-        //         break;
-        //     case (3):
-        //         $result['status'] = 'error';
-        //         $result['message'] = 'No permissions to course';
-        //         break;
-        //     default:
-        //         $result['status'] = 'error';
-        //         $result['message'] = 'Course not found';
-        //         break;
-        // }
-        //
-        // return $result;
     }
 
     /**

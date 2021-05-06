@@ -101,7 +101,7 @@ class process_request extends adhoc_task {
             $this->log('Could not unpack file: ' . $e->getMessage());
             $this->log($e->getTraceAsString());
 
-            // Cleanup
+            // Cleanup.
             fulldelete(dirname($fullpath));
             fulldelete($backuptempdir);
             return;
@@ -113,7 +113,7 @@ class process_request extends adhoc_task {
 
             $this->log("Could not find moodle_backup.xml in {$backuptempdir}");
 
-            // Cleanup
+            // Cleanup.
             fulldelete(dirname($fullpath));
             fulldelete($backuptempdir);
             return;
