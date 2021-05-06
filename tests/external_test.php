@@ -112,7 +112,7 @@ class external_testcase extends externallib_advanced_testcase {
 
         $request->set_status(restore_request::STATUS_COMPLETE);
         $result = external::get_restore_status($request->id);
-        $this->assertEquals('completed', $result);
+        $this->assertEquals('complete', $result);
 
         $request->set_status(restore_request::STATUS_ERROR);
         $result = external::get_restore_status($request->id);
