@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021050203; // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2020061500; // Requires Moodle version 3.9 and up
-$plugin->component = 'tool_s3wsrestore'; // Full name of the plugin (used for diagnostics)
+$plugin->version   = 2021050203; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2020061500; // Requires Moodle version 3.9 and up.
+$plugin->component = 'tool_s3wsrestore'; // Full name of the plugin (used for diagnostics).
 $plugin->dependencies = array(
     'local_aws' => 2020112000
 );

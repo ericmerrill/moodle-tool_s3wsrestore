@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 $functions = [
 
     'tool_s3wsrestore_restore_course' => [
@@ -31,7 +33,7 @@ $functions = [
         'classpath'   => '',
         'description' => 'Register a backup to restore into a course.',
         'type'        => 'write',
-        'capabilities'=> 'moodle/restore:restorecourse',
+        'capabilities' => 'moodle/restore:restorecourse',
         'ajax'        => false,
         'loginrequired' => true,
     ],
@@ -60,9 +62,8 @@ $services = array(
             'tool_s3wsrestore_get_detailed_restore_status',
             'tool_s3wsrestore_restore_course'
         ],
-        'restrictedusers' => 1, // if 1, the administrator must manually select which user can use this service.
-        // (Administration > Plugins > Web services > Manage services > Authorised users)
-        'enabled' => 1, // if 0, then token linked to this service won't work
-        'shortname' => 's3restore' //the short name used to refer to this service from elsewhere including when fetching a token
+        'restrictedusers' => 1,
+        'enabled' => 1,
+        'shortname' => 's3restore'
     ]
 );

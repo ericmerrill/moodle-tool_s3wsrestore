@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -62,7 +61,6 @@ abstract class base {
         $this->additionaldata = new stdClass();
     }
 
-    // ******* Record Manipulation Methods.
     /**
      * Create a object with the given record.
      *
@@ -108,7 +106,6 @@ abstract class base {
         return $obj;
     }
 
-    // ******* Database Interaction Methods.
     /**
      * Load the record for a given id.
      *
@@ -200,7 +197,6 @@ abstract class base {
         return $items;
     }
 
-    // ******* Magic Methods.
     /**
      * Gets (by reference) the passed property.
      *
