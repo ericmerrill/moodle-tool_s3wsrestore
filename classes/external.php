@@ -80,9 +80,10 @@ class external extends external_api {
             case (restore_request::STATUS_EXTRACTING):
             case (restore_request::STATUS_RESTORING):
                 return 'inprogress';
-            case (restore_request::STATUS_ERROR):
             case (restore_request::STATUS_FAILED):
                 return 'failed';
+            case (restore_request::STATUS_RESTORE_FAILED):
+                return 'partiallyrestored';
             case (restore_request::STATUS_COMPLETE):
                 return 'complete';
         }
@@ -131,8 +132,8 @@ class external extends external_api {
                 return ['status' => 'extracting'];
             case (restore_request::STATUS_RESTORING):
                 return ['status' => 'restoring', 'progress' => round($request->progress * 100, 1)];
-            case (restore_request::STATUS_ERROR):
-                $result = ['status' => 'error'];
+            case (restore_request::STATUS_RESTORE_FAILED):
+                $result = ['status' => 'partiallyrestored'];
                 if (isset($request->errormessage)) {
                     $result['errormessage'] = $request->errormessage;
                 }
@@ -146,6 +147,8 @@ class external extends external_api {
             case (restore_request::STATUS_COMPLETE):
                 return ['status' => 'complete'];
         }
+
+        return ['status' => 'unknownstatus'];
     }
 
     public static function get_detailed_restore_status_returns(): external_single_structure {

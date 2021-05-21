@@ -27,6 +27,7 @@ A plugin that exposes a webservice that takes a S3 object key, and attempts to d
         * `pending`
         * `inprogress`
         * `failed`
+        * `partiallyrestored` - Indicates a restore failed while the restore was in progress
         * `complete`
         * `unknownstatus`
 
@@ -40,8 +41,8 @@ A plugin that exposes a webservice that takes a S3 object key, and attempts to d
         * `downloading`
         * `extracting`
         * `restoring`
-        * `error`
         * `failed`
+        * `partiallyrestored`
         * `complete`
     * `errormessage` (optional) - An error message string, if there is one. Only with a `status` of `error` or `failed`
     * `progress` (optional) - Float, from 0.0 to 100.0, showing the current progress of the course restore, as reported by the Moodle restore system. Only with a `status` of `restoring`.

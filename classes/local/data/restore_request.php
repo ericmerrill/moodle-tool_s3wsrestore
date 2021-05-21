@@ -51,9 +51,9 @@ class restore_request extends base {
 
     public const STATUS_COMPLETE = 5;
 
-    public const STATUS_ERROR = 6;
+    public const STATUS_FAILED = 6;
 
-    public const STATUS_FAILED = 7;
+    public const STATUS_RESTORE_FAILED = 7;
 
     /** @var array Array of keys that go in the database object */
     protected $dbkeys = ['id', 'status', 'courseid', 'filekey', 'taskid', 'additional', 'progress', 'timecreated', 'timemodified'];
@@ -115,10 +115,10 @@ class restore_request extends base {
      * @param string $message
      * @param bool $save
      */
-    public function set_error(string $message, bool $save = true): void {
+    public function set_failure(string $message, bool $save = true): void {
         // TODO - re-enrol and/or count.
         $this->errormessage = $message;
-        $this->set_status(static::STATUS_ERROR, $save);
+        $this->set_status(static::STATUS_FAILED, $save);
     }
 
     /**
@@ -127,9 +127,9 @@ class restore_request extends base {
      * @param string $message
      * @param bool $save
      */
-    public function set_failure(string $message, bool $save = true): void {
+    public function set_restore_failure(string $message, bool $save = true): void {
         $this->errormessage = $message;
-        $this->set_status(static::STATUS_FAILED, $save);
+        $this->set_status(static::STATUS_RESTORE_FAILED, $save);
     }
 
     /**

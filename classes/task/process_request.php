@@ -75,7 +75,7 @@ class process_request extends adhoc_task {
         } catch (Exception $e) {
             // Something went wrong, mark things up.
             // TODO - re-enrol/counter on error.
-            $request->set_error('Could not download file from AWS: ' . $e->getMessage());
+            $request->set_failure('Could not download file from AWS: ' . $e->getMessage());
 
             $this->log('Error: Could not download file from AWS: ' . $e->getMessage());
             $this->log($e->getTraceAsString());
@@ -96,7 +96,7 @@ class process_request extends adhoc_task {
         } catch (Exception $e) {
             // Something went wrong, mark things up.
             // TODO - re-enrol/counter on error.
-            $request->set_error('Could not unpack file: ' . $e->getMessage());
+            $request->set_failure('Could not unpack file: ' . $e->getMessage());
 
             $this->log('Could not unpack file: ' . $e->getMessage());
             $this->log($e->getTraceAsString());
@@ -177,11 +177,12 @@ class process_request extends adhoc_task {
             fulldelete($backuptempdir);
 
             $request = restore_request::get_for_id($requestid);
-            $request->set_failure("Restore failed");
+            $request->set_restore_failure("Restore failed\n" . $e->getMessage() . $e->getTraceAsString());
 
             $this->log_finish("Restore failed!");
             $this->log($e->getMessage());
 
+            // Note that the finally statement will still run, even though we are returning here.
             return;
         } finally {
             // Delete the downloaded file.

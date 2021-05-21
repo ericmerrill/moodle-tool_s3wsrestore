@@ -79,7 +79,7 @@ class task_process_request_test extends externallib_advanced_testcase {
         $this->assertStringContainsString('Could not download file from AWS', $output);
         $this->assertFalse($DB->record_exists('page', ['name' => 'Restored Test Page']));
         $request = restore_request::get_for_id($request->id);
-        $this->assertEquals(restore_request::STATUS_ERROR, $request->status);
+        $this->assertEquals(restore_request::STATUS_FAILED, $request->status);
         $this->assertStringContainsString('Could not download file from AWS', $request->errormessage);
 
         // Next try a bad backup file.
