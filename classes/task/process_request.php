@@ -125,7 +125,7 @@ class process_request extends adhoc_task {
 
         $course = $DB->get_record('course', ['id' => $request->courseid]);
 
-        $settings = [
+        $overrides = [
             'overwrite_conf' => false,
             'users' => false,
             'keep_roles_and_enrolments' => true,
@@ -142,8 +142,20 @@ class process_request extends adhoc_task {
             $this->log('Restore ID is ' . $rc->get_restoreid());
             $request->restoreid = $rc->get_restoreid();
 
+            // Go through the settings and exclude any LTI modules.
+            $settings = $rc->get_plan()->get_settings();
+            foreach ($settings as $settingname => $setting) {
+                if (preg_match('/^lti_[\d]*_(?:included|userinfo)$/', $settingname)) {
+                    // Disable any lti activity restores.
+                    if ($setting->get_status() == base_setting::NOT_LOCKED) {
+                        $this->log("Skipping LTI module");
+                        $setting->set_value(0);
+                    }
+                }
+            }
+
             // Apply settings to the plan.
-            foreach ($settings as $settingname => $value) {
+            foreach ($overrides as $settingname => $value) {
                 $setting = $rc->get_plan()->get_setting($settingname);
                 if ($setting->get_status() == base_setting::NOT_LOCKED) {
                     $rc->get_plan()->get_setting($settingname)->set_value($value);
@@ -162,6 +174,10 @@ class process_request extends adhoc_task {
                 }
             }
 
+            // Record the maximum new forum before the restore, so we can do some cleanup after, and know it was only new stuff.
+            $params = [$request->courseid, 'news'];
+            $maxforumid = $DB->get_field_sql('SELECT MAX(id) FROM {forum} WHERE course = ? AND type = ?', $params);
+
             $rc->execute_plan();
 
             // Report results of the restore.
@@ -172,6 +188,8 @@ class process_request extends adhoc_task {
             }
 
             $rc->destroy();
+
+            $this->cleanup_extra_news_forum($request->courseid, $maxforumid);
         } catch (Exception $e) {
             // Cleanup the directory and original file.
             fulldelete($backuptempdir);
@@ -196,4 +214,39 @@ class process_request extends adhoc_task {
 
     }
 
+    /**
+     * Remove any extra news forums in the specified course after the forum id provided.
+     *
+     * @param int $courseid
+     * @param $prerestoreforumid
+     */
+    protected function cleanup_extra_news_forum(int $courseid, $prerestoreforumid) {
+        global $DB;
+
+        if (empty($prerestoreforumid)) {
+            $this->log('No previously existing news forum, so skipping check.');
+            return;
+        }
+
+        $select = 'course = ? AND type = ? AND id > ?';
+        $params = [$courseid, 'news', $prerestoreforumid];
+
+        $forums = $DB->get_records_select('forum', $select, $params);
+        if (empty($forums)) {
+            return;
+        }
+
+        foreach ($forums as $forum) {
+            try {
+                list($course, $cm) = get_course_and_cm_from_instance($forum->id, 'forum', $courseid);
+
+                $this->log('Deleting forum cmid: ' . $cm->id);
+
+                course_delete_module($cm->id);
+            } catch (Exception $e) {
+                $this->log('Exception while deleting forum cmid: ' . $cm->id);
+                $this->log($e->getMessage());
+            }
+        }
+    }
 }

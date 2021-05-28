@@ -7,6 +7,10 @@ A plugin that exposes a webservice that takes a S3 object key, and attempts to d
 * In Site Admin > Plugins > S3 Web Service Course Restore, setup the AWS credentials, and the S3 bucket to be used.
     * The credentialed AWS user will only need read access to the bucket.
 
+### Special Notes!
+* This plugin will skip restoring any LTI activities in the back up.
+* This plugin will delete any extra Announcement forums made during the restore, if one already exists in the course.
+
 ### Protocol
 
 #### tool_s3wsrestore_restore_course
